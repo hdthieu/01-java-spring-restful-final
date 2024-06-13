@@ -3,6 +3,7 @@ package vn.hoidanit.jobhunter.controller;
 import org.springframework.http.HttpStatus;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 // import org.hibernate.mapping.List;
 import org.springframework.web.bind.annotation.DeleteMapping;
 
@@ -21,14 +22,18 @@ import org.springframework.web.bind.annotation.PutMapping;
 @RestController
 public class UserController {
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     // @GetMapping("user/create")
     @PostMapping("/users")
     public ResponseEntity<User> createNewUser(@RequestBody User postNewUser) {
+        // passwordEncoder.encode(postNewUser.getPassword()): có kiểu là String
+        postNewUser.setPassword(passwordEncoder.encode(postNewUser.getPassword()));
         User newUser = this.userService.handleCreateUser(postNewUser);
         return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
     }

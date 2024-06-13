@@ -44,7 +44,6 @@ public class UserService {
             userUpdate.setName(user.getName());
             userUpdate.setEmail(user.getEmail());
             userUpdate.setPassword(user.getPassword());
-            // System.out.println(this.userRepository.save(userUpdate).getClass().getSimpleName());
             return this.userRepository.save(userUpdate);
 
         }
